@@ -33,22 +33,6 @@ const GobblDeliverySystem = () => {
   const PREP_TIME = 8000;
   const DELIVERY_TIME = 10000;
 
-  const addMessage = useCallback((category, text) => {
-    setState(prev => ({
-      ...prev,
-      messages: {
-        ...prev.messages,
-        [category]: [
-          ...prev.messages[category],
-          {
-            text,
-            timestamp: new Date().toLocaleTimeString(),
-          },
-        ],
-      },
-    }));
-  }, []);
-
   const pizzas = [
     {
       "id": 1,
@@ -2581,7 +2565,8 @@ const GobblDeliverySystem = () => {
   },
 ]
 
-  useEffect(() => {   
+  // On component mount, show welcome messages
+  useEffect(() => {
     const welcomeMessages = [
       {
         sender: "bot",
@@ -2605,67 +2590,62 @@ const GobblDeliverySystem = () => {
 
   useEffect(() => {
     scrollToBottom();
-    }, [messages]);
+  }, [messages]);
 
-const handleImageUpload = (e) => {
+  // Handle Image Upload
+  const handleImageUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
-        if (!file.type.startsWith("image/")) {
-            alert("Please upload a valid image file.");
-            return;
-        }
-        setUploadedImage(file);
+      if (!file.type.startsWith("image/")) {
+        alert("Please upload a valid image file.");
+        return;
+      }
+      setUploadedImage(file);
     }
-};
-  
+  };
+
+  // Example function for snapping to roads
   const getClosestRoadPoint = (x, y) => {
-    // Get closest point on the road network
     const roads = [
       { y: 20 }, // Horizontal roads
       { y: 50 },
       { y: 80 },
       { x: 20 }, // Vertical roads
       { x: 50 },
-      { x: 80 }
+      { x: 80 },
     ];
-    
-    // Find closest horizontal and vertical roads
-    const closestHorizontal = roads.slice(0, 3)
-      .reduce((closest, road) => 
-        Math.abs(road.y - y) < Math.abs(closest.y - y) ? road : closest
-      );
-      
-    const closestVertical = roads.slice(3)
-      .reduce((closest, road) => 
-        Math.abs(road.x - x) < Math.abs(closest.x - x) ? road : closest
-      );
-      
+    const closestHorizontal = roads.slice(0, 3).reduce((closest, road) =>
+      Math.abs(road.y - y) < Math.abs(closest.y - y) ? road : closest
+    );
+    const closestVertical = roads.slice(3).reduce((closest, road) =>
+      Math.abs(road.x - x) < Math.abs(closest.x - x) ? road : closest
+    );
     return {
       x: closestVertical.x,
-      y: closestHorizontal.y
+      y: closestHorizontal.y,
     };
   };
 
+  // The main order logic
   const handleOrder = useCallback((orderDetails, bundlePrice) => {
     // Generate random delivery coordinates
     const rawX = Math.floor(Math.random() * (85 - 15 + 1)) + 15;
     const rawY = Math.floor(Math.random() * (85 - 15 + 1)) + 15;
-  
     // Snap to nearest road intersection
     const deliveryLocation = getClosestRoadPoint(rawX, rawY);
     const orderId = Date.now();
-  
+
     const newOrder = {
       id: orderId,
       ...orderDetails,
       location: deliveryLocation,
-      status: 'preparing',
-      price: bundlePrice, // Use the passed bundle price
+      status: "preparing",
+      price: bundlePrice, 
     };
-  
+
     // Show "Proceeding to Payment..." Toast
     toast.success("Proceeding to payment...");
-  
+
     // Delay the payment completion logic
     setTimeout(() => {
       // Update state for payment and order
@@ -2678,33 +2658,24 @@ const handleImageUpload = (e) => {
           completedPayments: prev.payments.completedPayments + parseFloat(bundlePrice),
         },
       }));
-  
-      // Reflect payment completion in accounting
-      addMessage(
-        "accounting",
-        `Payment completed for ${orderDetails.item} bundle: AED ${bundlePrice}`
-      );
-  
-      // Show "Payment Completed!" Toast
+
+      // Some chat logs
+      addMessage("accounting", `Payment completed for ${orderDetails.item} bundle: AED ${bundlePrice}`);
       toast.success("Payment completed!");
-  
-      // Send Consumer message
       addMessage("consumer", `New order received: ${newOrder.item} bundle`);
-  
-      // Send Restaurant message
       addMessage("restaurant", `Preparing ${newOrder.item} bundle`);
-  
-      // Update bot messages
+
+      // Let user know
       setMessages((prev) => [
         ...prev,
         { sender: "bot", text: `Your order for ${newOrder.item} bundle.` },
       ]);
-  
+
       // Start delivery after prep time
       setTimeout(() => {
         const deliveryOrder = { ...newOrder, status: "delivering" };
         setActiveDelivery(deliveryOrder);
-  
+
         addMessage("restaurant", `Order ready: ${orderDetails.item} bundle`);
         addMessage("delivery", `Starting delivery for ${orderDetails.item} bundle.`);
         setMessages((prev) => [
@@ -2714,7 +2685,7 @@ const handleImageUpload = (e) => {
             text: `Your ${orderDetails.item} bundle is out for delivery!`,
           },
         ]);
-  
+
         // Complete delivery after delivery time
         setTimeout(() => {
           setActiveDelivery(null);
@@ -2726,11 +2697,14 @@ const handleImageUpload = (e) => {
                 : order
             ),
           }));
-  
+
           addMessage("delivery", `Delivery completed for ${orderDetails.item} bundle!`);
           setMessages((prev) => [
             ...prev,
-            { sender: "bot", text: `Your ${orderDetails.item}bundle has been delivered. Enjoy your meal!` },
+            {
+              sender: "bot",
+              text: `Your ${orderDetails.item} bundle has been delivered. Enjoy your meal!`,
+            },
             {
               sender: "bot",
               text: `We'd love to hear your feedback! Please provide a rating (1-5) and a short review for your ${orderDetails.item}.`,
@@ -2738,165 +2712,232 @@ const handleImageUpload = (e) => {
           ]);
         }, DELIVERY_TIME);
       }, PREP_TIME);
-    }, 3000); // 3-second delay for payment completion
-  }, [addMessage]);
+    }, 3000); // 3-second payment delay
+  }, []);
 
-  const analyzePizzaRequest = async (userQuery) => {
+  // Here is the UNIFIED function that calls the SINGLE endpoint
+  const analyzeUserQuery = async (userQuery) => {
     try {
-      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/pizza-recommendations`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ query: userQuery }),
-      });
-  
+      const response = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL}/api/unified-chat`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ query: userQuery }),
+        }
+      );
+
       if (!response.ok) {
         const errorData = await response.json();
-        console.error('Backend Error:', errorData);
-        throw new Error(errorData.error || 'Failed to fetch recommendations');
+        console.error("Backend Error:", errorData);
+        throw new Error(errorData.error || "Failed to fetch from /api/unified-chat");
       }
-  
-      const data = await response.json(); // Parse JSON response
+
+      // The single endpoint can return EITHER:
+      // { "recommendations": [...], "explanation": "..." } OR
+      // { "reply": "some text" }
+      const data = await response.json();
       setErrorOccurred(false);
-      return data; // Return data to be used in the frontend
+      return data;
     } catch (error) {
-      console.error('Error fetching recommendations:', error);
+      console.error("Error analyzing user query:", error);
       setErrorOccurred(true);
       return {
-        recommendations: [],
-        explanation: 'Unable to process your request. Please try again later.',
+        // We do NOT know if it's chat or rec, so best we can do is indicate failure
+        reply: "Unable to process your request. Please try again later.",
       };
     }
   };
 
-
-  const processReview = useCallback((input) => {
-    const pendingReviewOrder = state.orders.find(order => order.awaitingReview);
-    
-    if (!pendingReviewOrder) {
-      setMessages(prev => [...prev, { 
-        sender: "bot", 
-        text: "No active order found to review. Please try again." 
-      }]);
-      return;
-    }
-
-    const ratingMatch = input.match(/\b[1-5]\b/);
-    const rating = ratingMatch ? parseInt(ratingMatch[0], 10) : null;
-    const review = input.replace(/\b[1-5]\b/, "").trim();
-
-    if (!rating || !review) {
-      setMessages(prev => [...prev, {
-        sender: "bot",
-        text: "Please provide both a valid rating (1-5) and a review."
-      }]);
-      return;
-    }
-
-    setState(prev => ({
+  // Utility to push messages into specialized channels 
+  // (like "delivery", "accounting", etc. if you need it)
+  const addMessage = (channel, text) => {
+    const timestamp = new Date().toLocaleString();
+    setState((prev) => ({
       ...prev,
-      orders: prev.orders.map(order => 
-        order.id === pendingReviewOrder.id 
-          ? { ...order, awaitingReview: false }
-          : order
-      ),
-      reviews: [...prev.reviews, {
-        orderId: pendingReviewOrder.id,
-        item: pendingReviewOrder.item,
-        rating,
-        review,
-        timestamp: new Date().toLocaleString()
-      }]
+      messages: {
+        ...prev.messages,
+        [channel]: [...prev.messages[channel], { timestamp, text }],
+      },
     }));
+  };
 
-    setMessages(prev => [...prev, {
-      sender: "bot",
-      text: `Thank you for your ${rating}-star review of ${pendingReviewOrder.item}!`
-    },
-    {
-      sender: "bot",
-      text: "What would you like to order next? 🍕",
-    }]);
-  }, [state.orders]);
+  // Handling order reviews
+  const processReview = useCallback(
+    (input) => {
+      const pendingReviewOrder = state.orders.find((o) => o.awaitingReview);
+      if (!pendingReviewOrder) {
+        setMessages((prev) => [
+          ...prev,
+          {
+            sender: "bot",
+            text: "No active order found to review. Please try again.",
+          },
+        ]);
+        return;
+      }
+      const ratingMatch = input.match(/\b[1-5]\b/);
+      const rating = ratingMatch ? parseInt(ratingMatch[0], 10) : null;
+      const review = input.replace(/\b[1-5]\b/, "").trim();
 
-  const sendMessage = useCallback(async (isImageUpload = false) => {
-    if (!input.trim() && !isImageUpload) return;
-  
-    if (isImageUpload && uploadedImage) {
-      const userMessage = {
-        sender: "user",
-        text: "📸 Uploaded an image for bundle recommendation",
-      };
-      setMessages((prev) => [...prev, userMessage]);
+      if (!rating || !review) {
+        setMessages((prev) => [
+          ...prev,
+          {
+            sender: "bot",
+            text: "Please provide both a valid rating (1-5) and a review.",
+          },
+        ]);
+        return;
+      }
+
+      setState((prev) => ({
+        ...prev,
+        orders: prev.orders.map((order) =>
+          order.id === pendingReviewOrder.id
+            ? { ...order, awaitingReview: false }
+            : order
+        ),
+        reviews: [
+          ...prev.reviews,
+          {
+            orderId: pendingReviewOrder.id,
+            item: pendingReviewOrder.item,
+            rating,
+            review,
+            timestamp: new Date().toLocaleString(),
+          },
+        ],
+      }));
+
       setMessages((prev) => [
         ...prev,
         {
           sender: "bot",
-          text: "Analyzing your image to create the perfect bundle...",
+          text: `Thank you for your ${rating}-star review of ${pendingReviewOrder.item}!`,
         },
-      ]);
-      await analyzeImage(uploadedImage);
-      setInput("");
-      return;
-    }
-  
-    const userMessage = {
-      sender: "user",
-      text: input,
-    };
-    setMessages((prev) => [...prev, userMessage]);
-  
-    const lastBotMessage = [...messages]
-      .reverse()
-      .find((msg) => msg.sender === "bot");
-    const isAwaitingReview =
-      lastBotMessage?.text.includes(
-        "Please provide a rating (1-5) and a short review"
-      );
-  
-    if (isAwaitingReview) {
-      processReview(input);
-      setInput("");
-      return;
-    }
-  
-    setMessages((prev) => [
-      ...prev,
-      { sender: "bot", text: "Typing...", isTyping: true },
-    ]);
-  
-    try {
-      const analysis = await analyzePizzaRequest(input);
-  
-      const recommendedPizzas = analysis.recommendations.map((id) =>
-        pizzas.find((pizza) => pizza.id === id)
-      );
-  
-      setMessages((prev) => [
-        ...prev.filter((msg) => !msg.isTyping),
         {
           sender: "bot",
-          text: analysis.explanation || "Here are some pizzas you might like:",
-          suggestions: recommendedPizzas,
+          text: "What would you like to order next? 🍕",
         },
       ]);
-    } catch (error) {
-      console.error("Error processing request:", error);
-  
+    },
+    [state.orders]
+  );
+
+  // The main "sendMessage" logic
+  const sendMessage = useCallback(
+    async (isImageUpload = false) => {
+      // If no text and no image, do nothing
+      if (!input.trim() && !isImageUpload) return;
+
+      // If user pressed "upload image"
+      if (isImageUpload && uploadedImage) {
+        const userMessage = {
+          sender: "user",
+          text: "📸 Uploaded an image for bundle recommendation",
+        };
+        setMessages((prev) => [...prev, userMessage]);
+        setMessages((prev) => [
+          ...prev,
+          { sender: "bot", text: "Analyzing your image..." },
+        ]);
+
+        await analyzeImage(uploadedImage); 
+        // your custom image analysis, if needed
+        setInput("");
+        return;
+      }
+
+      // Otherwise, normal text message
+      const userMessage = { sender: "user", text: input };
+      setMessages((prev) => [...prev, userMessage]);
+
+      // Check if we are expecting a review
+      const lastBotMessage = [...messages].reverse().find((msg) => msg.sender === "bot");
+      const isAwaitingReview =
+        lastBotMessage?.text.includes("Please provide a rating (1-5) and a short review");
+
+      if (isAwaitingReview) {
+        processReview(input);
+        setInput("");
+        return;
+      }
+
+      // Show "Bot is typing..."
       setMessages((prev) => [
-        ...prev.filter((msg) => !msg.isTyping),
-        {
-          sender: "bot",
-          text: "I apologize, but I encountered an error processing your request. Let me show you our popular options instead.",
-          suggestions: pizzas.slice(0, 4),
-        },
+        ...prev,
+        { sender: "bot", text: "Typing...", isTyping: true },
       ]);
-    }
-  
-    setInput("");
-  }, [input, uploadedImage, processReview, messages, analyzePizzaRequest, pizzas]);
-  
+
+      try {
+        // Call the single endpoint
+        const analysis = await analyzeUserQuery(input);
+
+        // Remove the "Typing..." placeholder
+        setMessages((prev) => prev.filter((m) => !m.isTyping));
+
+        // If the LLM returned a 'reply', it's general chat
+        if (analysis.reply) {
+          setMessages((prev) => [
+            ...prev,
+            {
+              sender: "bot",
+              text: analysis.reply,
+            },
+          ]);
+          setInput("");
+          return;
+        }
+
+        // Otherwise, if LLM returned "recommendations" => it's a bundle
+        if (analysis.recommendations) {
+          // Transform the recommendation IDs into real items
+          const recommendedPizzas = analysis.recommendations.map((id) =>
+            pizzas.find((p) => p.id === id)
+          );
+
+          setMessages((prev) => [
+            ...prev,
+            {
+              sender: "bot",
+              text: analysis.explanation || "Here are some recommendations:",
+              suggestions: recommendedPizzas,
+            },
+          ]);
+        } else {
+          // Fallback (should rarely happen unless the backend returned something else)
+          setMessages((prev) => [
+            ...prev,
+            {
+              sender: "bot",
+              text: "I'm not sure what to recommend. Please try again!",
+            },
+          ]);
+        }
+      } catch (error) {
+        console.error("Error processing request:", error);
+
+        // Remove "Typing..." placeholder
+        setMessages((prev) => prev.filter((m) => !m.isTyping));
+
+        // Fallback error message
+        setMessages((prev) => [
+          ...prev,
+          {
+            sender: "bot",
+            text: "I encountered an error. Let me show you our popular options instead.",
+            suggestions: pizzas.slice(0, 4),
+          },
+        ]);
+      }
+
+      setInput("");
+    },
+    [input, uploadedImage, processReview, messages, analyzeUserQuery]
+  );
+
+  // Send message on Enter press
   const handleKeyPress = useCallback(
     (e) => {
       if (e.key === "Enter") {
@@ -2907,148 +2948,186 @@ const handleImageUpload = (e) => {
     [sendMessage]
   );
 
+  // The component's rendering logic remains the same,
+  // except we replaced references to "analyzePizzaRequest" with "analyzeUserQuery"
+  // and changed the API endpoint from "/api/pizza-recommendations" to "/api/unified-chat".
   return (
     <div className="w-screen min-h-screen bg-gradient-to-br from-gray-800 to-gray-900 text-white flex flex-col">
       {/* Toast Notifications */}
       <Toaster position="top-right" reverseOrder={false} />
-  
+
       {/* Main Section */}
       <main className="flex-grow grid grid-cols-3 gap-4 p-4">
         {/* Chatbot Section */}
         <div className="col-span-1 border-4 border-green-400 rounded-lg p-6 bg-gray-800 flex flex-col h-full shadow-lg">
           <div className="h-[70vh] overflow-y-auto mb-2 w-full">
             {messages.map((msg, index) => (
-              <div key={index} className={`mb-4 ${msg.sender === "user" ? "text-right" : "text-left"}`}>
-                <p className={`inline-block p-3 rounded-lg transition-all duration-300 ${msg.sender === "user" ? "bg-blue-500 hover:bg-blue-600" : "bg-gray-700 hover:bg-gray-600"}`}>
+              <div
+                key={index}
+                className={`mb-4 ${
+                  msg.sender === "user" ? "text-right" : "text-left"
+                }`}
+              >
+                <p
+                  className={`inline-block p-3 rounded-lg transition-all duration-300 ${
+                    msg.sender === "user"
+                      ? "bg-blue-500 hover:bg-blue-600"
+                      : "bg-gray-700 hover:bg-gray-600"
+                  }`}
+                >
                   {msg.text}
                 </p>
+
+                {/* If it's a recommendation with suggestions, render them */}
                 {msg.suggestions && (
                   <div className="mt-4">
-                  {!errorOccurred ? (
-                    <>
-                      <div className="grid grid-cols-1 gap-4">
-                        {msg.suggestions.map((pizza) => (
-                          <div
-                            key={pizza.id}
-                            className="bg-gray-900 p-4 rounded-lg border border-gray-700 flex items-center hover:shadow-xl transition-transform transform hover:scale-105"
-                          >
-                            <img
-                              src={pizza.image}
-                              alt={pizza.name}
-                              className="w-24 h-24 rounded-full mr-4"
-                            />
-                            <div>
-                              <h4 className="text-lg font-bold mb-1">{pizza.name}</h4>
-                              <p className="text-sm text-gray-400 mb-1">{pizza.description}</p>
-                              <p className="text-sm text-green-400 font-bold">{pizza.price}</p>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                
-                      <div className="mt-4 p-6 bg-gray-800 rounded-lg border border-gray-700 shadow-lg">
-                        <div className="flex items-center">
-                          <Store className="text-green-400 mr-3" size={20} />
-                          <h3 className="text-xl text-white">
-                            Restaurant: {msg.suggestions[0]?.restaurant || "Restaurant Name"}
-                          </h3>
-                        </div>
-                      </div>
-                
-                      <div className="mt-4 p-6 bg-gray-900 rounded-lg border border-gray-700 shadow-lg">
-                        <div className="flex items-center mb-2">
-                          <DollarSign className="text-gray-400 mr-3" size={20} />
-                          <p className="text-lg text-gray-400 font-bold line-through">
-                            Regular Price: AED{" "}
-                            {msg.suggestions.reduce((sum, pizza) => sum + (parseFloat(pizza.price) || 0), 0).toFixed(2)}
-                          </p>
-                        </div>
-                
-                        <div className="flex items-center">
-                          <Package className="text-green-400 mr-3" size={20} />
-                          <p className="text-lg text-green-400 font-bold">
-                            Bundle Price: AED{" "}
-                            {(msg.suggestions.reduce((sum, pizza) => sum + (parseFloat(pizza.price) || 0), 0) * 0.95).toFixed(2)}
-                          </p>
-                        </div>
-                      </div>
-                
-                      <div className="mt-6 p-4 bg-gray-800 rounded-lg border border-gray-700">
-                        <div className="flex justify-around mb-4">
-                          <button
-                            onClick={() => {
-                              setPaymentMethod("card");
-                              toast.success("Card payment method selected!");
-                            }}
-                            className={`flex items-center space-x-2 px-4 py-2 rounded-lg transition-all ${
-                              paymentMethod === "card"
-                                ? "bg-green-500 text-black"
-                                : "bg-gray-700 text-white hover:bg-gray-600"
-                            }`}
-                          >
-                            <CreditCard size={20} />
-                            <span>Card</span>
-                          </button>
-                
-                          <button
-                            onClick={() => {
-                              setPaymentMethod("crypto");
-                              toast.success("Crypto payment method selected!");
-                            }}
-                            className={`flex items-center space-x-2 px-4 py-2 rounded-lg transition-all ${
-                              paymentMethod === "crypto"
-                                ? "bg-green-500 text-black"
-                                : "bg-gray-700 text-white hover:bg-gray-600"
-                            }`}
-                          >
-                            <Bitcoin size={20} />
-                            <span>Crypto</span>
-                          </button>
-                        </div>
-                
-                        {paymentMethod === "crypto" && (
-                          <div className="mb-4">
-                            <button
-                              onClick={() => toast.success("Wallet connected successfully!")}
-                              className="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-400"
+                    {!errorOccurred ? (
+                      <>
+                        <div className="grid grid-cols-1 gap-4">
+                          {msg.suggestions.map((pizza) => (
+                            <div
+                              key={pizza.id}
+                              className="bg-gray-900 p-4 rounded-lg border border-gray-700 flex items-center hover:shadow-xl transition-transform transform hover:scale-105"
                             >
-                              Connect Wallet
+                              <img
+                                src={pizza.image}
+                                alt={pizza.name}
+                                className="w-24 h-24 rounded-full mr-4"
+                              />
+                              <div>
+                                <h4 className="text-lg font-bold mb-1">
+                                  {pizza.name}
+                                </h4>
+                                <p className="text-sm text-gray-400 mb-1">
+                                  {pizza.description}
+                                </p>
+                                <p className="text-sm text-green-400 font-bold">
+                                  {pizza.price}
+                                </p>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+
+                        <div className="mt-4 p-6 bg-gray-800 rounded-lg border border-gray-700 shadow-lg">
+                          <div className="flex items-center">
+                            <Store className="text-green-400 mr-3" size={20} />
+                            <h3 className="text-xl text-white">
+                              Restaurant:{" "}
+                              {msg.suggestions[0]?.restaurant ||
+                                "Restaurant Name"}
+                            </h3>
+                          </div>
+                        </div>
+
+                        <div className="mt-4 p-6 bg-gray-900 rounded-lg border border-gray-700 shadow-lg">
+                          <div className="flex items-center mb-2">
+                            <DollarSign className="text-gray-400 mr-3" size={20} />
+                            <p className="text-lg text-gray-400 font-bold line-through">
+                              Regular Price: AED{" "}
+                              {msg.suggestions
+                                .reduce(
+                                  (sum, p) => sum + (parseFloat(p.price) || 0),
+                                  0
+                                )
+                                .toFixed(2)}
+                            </p>
+                          </div>
+
+                          <div className="flex items-center">
+                            <Package className="text-green-400 mr-3" size={20} />
+                            <p className="text-lg text-green-400 font-bold">
+                              Bundle Price: AED{" "}
+                              {(
+                                msg.suggestions.reduce(
+                                  (sum, p) => sum + (parseFloat(p.price) || 0),
+                                  0
+                                ) * 0.95
+                              ).toFixed(2)}
+                            </p>
+                          </div>
+                        </div>
+
+                        <div className="mt-6 p-4 bg-gray-800 rounded-lg border border-gray-700">
+                          <div className="flex justify-around mb-4">
+                            <button
+                              onClick={() => {
+                                setPaymentMethod("card");
+                                toast.success("Card payment method selected!");
+                              }}
+                              className={`flex items-center space-x-2 px-4 py-2 rounded-lg transition-all ${
+                                paymentMethod === "card"
+                                  ? "bg-green-500 text-black"
+                                  : "bg-gray-700 text-white hover:bg-gray-600"
+                              }`}
+                            >
+                              <CreditCard size={20} />
+                              <span>Card</span>
+                            </button>
+
+                            <button
+                              onClick={() => {
+                                setPaymentMethod("crypto");
+                                toast.success("Crypto payment method selected!");
+                              }}
+                              className={`flex items-center space-x-2 px-4 py-2 rounded-lg transition-all ${
+                                paymentMethod === "crypto"
+                                  ? "bg-green-500 text-black"
+                                  : "bg-gray-700 text-white hover:bg-gray-600"
+                              }`}
+                            >
+                              <Bitcoin size={20} />
+                              <span>Crypto</span>
                             </button>
                           </div>
-                        )}
-                
-                        <button
-                          onClick={() => {
-                            const bundlePrice = (
-                              msg.suggestions.reduce(
-                                (sum, pizza) => sum + (parseFloat(pizza.price) || 0),
-                                0
-                              ) * 0.95
-                            ).toFixed(2);
-                
-                            handleOrder(
-                              { item: msg.suggestions[0].name }, // Pass required item details
-                              bundlePrice // Pass the calculated bundle price
-                            );
-                          }}
-                          className="w-full bg-green-500 text-black py-3 px-6 rounded-lg hover:bg-green-400 font-bold"
-                        >
-                          Proceed to Payment
-                        </button>
-                      </div>
-                    </>
-                  ) : (
-                    <p className="text-red-500 font-bold">Unable to process your request. Please try again later.</p>
-                  )}
-                </div>
-                
+
+                          {paymentMethod === "crypto" && (
+                            <div className="mb-4">
+                              <button
+                                onClick={() =>
+                                  toast.success("Wallet connected successfully!")
+                                }
+                                className="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-400"
+                              >
+                                Connect Wallet
+                              </button>
+                            </div>
+                          )}
+
+                          <button
+                            onClick={() => {
+                              const bundlePrice = (
+                                msg.suggestions.reduce(
+                                  (sum, p) =>
+                                    sum + (parseFloat(p.price) || 0),
+                                  0
+                                ) * 0.95
+                              ).toFixed(2);
+
+                              handleOrder(
+                                { item: msg.suggestions[0].name },
+                                bundlePrice
+                              );
+                            }}
+                            className="w-full bg-green-500 text-black py-3 px-6 rounded-lg hover:bg-green-400 font-bold"
+                          >
+                            Proceed to Payment
+                          </button>
+                        </div>
+                      </>
+                    ) : (
+                      <p className="text-red-500 font-bold">
+                        Unable to process your request. Please try again later.
+                      </p>
+                    )}
+                  </div>
                 )}
               </div>
             ))}
-            {/* Ref to ensure auto-scroll */}
             <div ref={messagesEndRef} />
           </div>
-  
+
+          {/* If there's an uploaded image, show a small preview with "Remove" */}
           {uploadedImage && (
             <div className="mb-4 flex items-center justify-between bg-gray-700 p-3 rounded-lg">
               <img
@@ -3059,7 +3138,7 @@ const handleImageUpload = (e) => {
               <button
                 onClick={() => {
                   setUploadedImage(null);
-                  toast.error('Image removed!');
+                  toast.error("Image removed!");
                 }}
                 className="text-red-500 font-bold hover:underline"
               >
@@ -3067,7 +3146,8 @@ const handleImageUpload = (e) => {
               </button>
             </div>
           )}
-  
+
+          {/* Input + send button */}
           <div className="flex items-center gap-1 mt-auto">
             <input
               type="text"
@@ -3087,15 +3167,15 @@ const handleImageUpload = (e) => {
               />
             </label>
             <button
-              onClick={sendMessage}
+              onClick={() => sendMessage()}
               className="bg-green-500 text-black py-2 px-4 rounded-lg hover:bg-green-400"
             >
               Send
             </button>
           </div>
         </div>
-  
-        {/* Delivery Details Section */}
+
+        {/* Delivery + Payment + Map + Reviews Section */}
         <div className="col-span-1 grid grid-rows-[1fr,auto] gap-4">
           {/* Delivery Status */}
           <div className="grid grid-cols-2 grid-rows-2 gap-4">
@@ -3105,7 +3185,10 @@ const handleImageUpload = (e) => {
               Restaurant: Store,
               Accounting: DollarSign,
             }).map(([title, Icon]) => (
-              <div key={title} className="bg-gray-800 rounded-lg p-4 border border-blue-400 hover:shadow-xl transition-transform transform hover:scale-105">
+              <div
+                key={title}
+                className="bg-gray-800 rounded-lg p-4 border border-blue-400 hover:shadow-xl transition-transform transform hover:scale-105"
+              >
                 <div className="flex items-center mb-2">
                   <Icon className="mr-2 w-6 h-6" />
                   <h3 className="font-bold text-lg text-blue-400">{title}</h3>
@@ -3113,7 +3196,9 @@ const handleImageUpload = (e) => {
                 <div className="h-32 overflow-y-auto bg-gray-700 rounded p-2">
                   {state.messages[title.toLowerCase()].map((msg, i) => (
                     <div key={i} className="mb-1">
-                      <span className="text-gray-400 text-xs block">{msg.timestamp}</span>
+                      <span className="text-gray-400 text-xs block">
+                        {msg.timestamp}
+                      </span>
                       <p className="text-gray-200 text-sm">{msg.text}</p>
                     </div>
                   ))}
@@ -3124,63 +3209,63 @@ const handleImageUpload = (e) => {
 
           {/* Payment Summary */}
           <div className="bg-gray-800 rounded-lg p-4 border border-green-400">
-            <h3 className="font-bold text-lg text-green-400 mb-4">Payment Summary</h3>
+            <h3 className="font-bold text-lg text-green-400 mb-4">
+              Payment Summary
+            </h3>
             <div className="grid grid-cols-3 gap-4">
-                <div>
+              <div>
                 <span className="text-xs text-gray-400">Revenue</span>
                 <p className="font-bold text-green-400 text-lg">
-                    AED {state.payments.totalRevenue.toFixed(2)}
+                  AED {state.payments.totalRevenue.toFixed(2)}
                 </p>
-                </div>
-                <div>
+              </div>
+              <div>
                 <span className="text-xs text-gray-400">Pending</span>
                 <p className="font-bold text-yellow-400 text-lg">
-                    AED {state.payments.pendingPayments.toFixed(2)}
+                  AED {state.payments.pendingPayments.toFixed(2)}
                 </p>
-                </div>
-                <div>
+              </div>
+              <div>
                 <span className="text-xs text-gray-400">Completed</span>
                 <p className="font-bold text-blue-400 text-lg">
-                    AED {state.payments.completedPayments.toFixed(2)}
+                  AED {state.payments.completedPayments.toFixed(2)}
                 </p>
-                </div>
+              </div>
             </div>
-            </div>
+          </div>
         </div>
 
-      {/* Map and Reviews Section */}
+        {/* Map & Reviews */}
         <section className="grid grid-cols-3 gap-4">
-        {/* Map Section */}
-        <div className="col-span-3 bg-gray-900 rounded-lg shadow-2xl">
+          <div className="col-span-3 bg-gray-900 rounded-lg shadow-2xl">
             <EnhancedDeliveryMap
-            activeDelivery={activeDelivery}
-            prepTime={PREP_TIME}
-            deliveryTime={DELIVERY_TIME}
+              activeDelivery={activeDelivery}
+              prepTime={PREP_TIME}
+              deliveryTime={DELIVERY_TIME}
             />
-        </div>
-
-        {/* Customer Reviews Section */}
-        <div className="col-span-3 bg-gray-800 rounded-lg p-4 border border-green-400">
-            <h3 className="font-bold text-lg text-green-400 mb-4">Customer Reviews</h3>
+          </div>
+          <div className="col-span-3 bg-gray-800 rounded-lg p-4 border border-green-400">
+            <h3 className="font-bold text-lg text-green-400 mb-4">
+              Customer Reviews
+            </h3>
             <div className="space-y-2">
-            {state.reviews.length > 0 ? (
+              {state.reviews.length > 0 ? (
                 state.reviews.map((review, index) => (
-                <div key={index} className="bg-gray-700 p-2 rounded">
+                  <div key={index} className="bg-gray-700 p-2 rounded">
                     <p className="text-yellow-400">Rating: {review.rating} / 5</p>
                     <p className="text-gray-200">{review.review}</p>
                     <p className="text-gray-400 text-sm">- {review.item}</p>
-                </div>
+                  </div>
                 ))
-            ) : (
-                <p className="text-gray-400">No reviews yet. Be the first to share your feedback!</p>
-            )}
+              ) : (
+                <p className="text-gray-400">
+                  No reviews yet. Be the first to share your feedback!
+                </p>
+              )}
             </div>
-            
-        </div>
+          </div>
         </section>
-        
       </main>
-
     </div>
   );
 };
