@@ -2109,7 +2109,7 @@ const GobblDeliverySystem = () => {
       "name": "Chocolate Eclair",
       "description": "",
       "category": null,
-      "price": "AED 8",
+      "price": "8.00 AED",
       "restaurant": "Dunkin Dubai",
       "image": "/dunkinpapajones_frontend/dunkin_dubai_images/image__97.png"
   },
@@ -2118,7 +2118,7 @@ const GobblDeliverySystem = () => {
       "name": "Vanilla All",
       "description": "",
       "category": "Pastry",
-      "price": "AED 7",
+      "price": "7.00 AED",
       "restaurant": "Dunkin Donut",
       "image": "/dunkinpapajones_frontend/dunkin_dubai_images/image__98.png"
   },
@@ -2127,7 +2127,7 @@ const GobblDeliverySystem = () => {
       "name": "Choco Wacko Donut",
       "description": "Choco Wacko Donut",
       "category": "Donut",
-      "price": "AED 7",
+      "price": "7.00 AED",
       "restaurant": "Dunkin Donut",
       "image": "/dunkinpapajones_frontend/dunkin_dubai_images/image__99.png"
   },
@@ -2136,7 +2136,7 @@ const GobblDeliverySystem = () => {
       "name": "Cookies & Cream Made with Oreo",
       "description": "",
       "category": "Donut",
-      "price": "AED 8",
+      "price": "8.00 AED",
       "restaurant": "Dunkin Donut",
       "image": "/dunkinpapajones_frontend/dunkin_dubai_images/image__100.png"
   },
@@ -2145,7 +2145,7 @@ const GobblDeliverySystem = () => {
       "name": "Choco Butternut Donut",
       "description": "",
       "category": "Donut",
-      "price": "AED 8",
+      "price": "8.00 AED",
       "restaurant": "Dunkin Donut",
       "image": "/dunkinpapajones_frontend/dunkin_dubai_images/image__101.png"
   },
@@ -2154,7 +2154,7 @@ const GobblDeliverySystem = () => {
       "name": "Chicken Tikka Sourdough",
       "description": "Enjoy the bold flavors of our freshly made Chicken Tikka Sourdough Sandwich with juicy chicken tikka, creamy mayonnaise, zesty sriracha, and melted cheese.",
       "category": "Sandwich",
-      "price": "AED 23",
+      "price": "23.00 AED",
       "restaurant": "Dunkin Donut",
       "image": "/dunkinpapajones_frontend/dunkin_dubai_images/image__102.png"
   },
@@ -2163,7 +2163,7 @@ const GobblDeliverySystem = () => {
       "name": "Spicy Cheese Sandwich",
       "description": "Paneer Tikka Sourdough Sandwich with creamy mayonnaise, spicy sriracha, and gooey cheese.",
       "category": "Sandwich",
-      "price": "AED 23",
+      "price": "23.00 AED",
       "restaurant": "Dunkin Donut",
       "image": "/dunkinpapajones_frontend/dunkin_dubai_images/image__103.png"
   },
@@ -2172,7 +2172,7 @@ const GobblDeliverySystem = () => {
       "name": "Egg Sandwich",
       "description": "Egg sandwich with your choice of sauce and optional cheese.",
       "category": "Sandwich",
-      "price": "AED 14",
+      "price": "14.00 AED",
       "restaurant": "Dunkin Donut",
       "image": "/dunkinpapajones_frontend/dunkin_dubai_images/image__104.png"
   },
@@ -2181,7 +2181,7 @@ const GobblDeliverySystem = () => {
       "name": "Double Egg Bagel",
       "description": "",
       "category": "Bagel",
-      "price": "AED 18",
+      "price": "18.00 AED",
       "restaurant": "Dunkin Donut",
       "image": "/dunkinpapajones_frontend/dunkin_dubai_images/image__105.png"
   },
@@ -2190,7 +2190,7 @@ const GobblDeliverySystem = () => {
       "name": "Cream Cheese Bagel",
       "description": "Bagel with cream cheese filling.",
       "category": "Bagel",
-      "price": "AED 14",
+      "price": "14.00 AED",
       "restaurant": "Dunkin Donut",
       "image": "/dunkinpapajones_frontend/dunkin_dubai_images/image__106.png"
   },
@@ -2199,7 +2199,7 @@ const GobblDeliverySystem = () => {
       "name": "Cheese Croissant",
       "description": "Cheese in a flaky buttery croissant.",
       "category": "Pastry",
-      "price": "AED 16",
+      "price": "16.00 AED",
       "restaurant": "Dunkin Donut",
       "image": "/dunkinpapajones_frontend/dunkin_dubai_images/image__107.png"
   },
@@ -2208,7 +2208,7 @@ const GobblDeliverySystem = () => {
       "name": "Double Egg Croissant",
       "description": "",
       "category": "Pastry",
-      "price": "AED 18",
+      "price": "18.00 AED",
       "restaurant": "Dunkin Donut",
       "image": "/dunkinpapajones_frontend/dunkin_dubai_images/image__108.png"
   },
@@ -2217,7 +2217,7 @@ const GobblDeliverySystem = () => {
       "name": "Turkey & Cheese Sourdough",
       "description": "",
       "category": "Sandwich",
-      "price": "AED 21",
+      "price": "21.00 AED",
       "restaurant": "Dunkin Donut",
       "image": "/dunkinpapajones_frontend/dunkin_dubai_images/image__109.png"
   },
@@ -2226,7 +2226,7 @@ const GobblDeliverySystem = () => {
       "name": "Double Egg Potato Bun Sandwich",
       "description": "Choice of double egg sandwich with your choice of sauce and optional cheese.",
       "category": "Sandwich",
-      "price": "AED 18",
+      "price": "18.00 AED",
       "restaurant": "Dunkin Donut",
       "image": "/dunkinpapajones_frontend/dunkin_dubai_images/image__110.png"
   },
@@ -2235,7 +2235,7 @@ const GobblDeliverySystem = () => {
       "name": "Egg Croissant",
       "description": "",
       "category": "Pastry",
-      "price": "AED 14",
+      "price": "14.00 AED",
       "restaurant": "Dunkin Donut",
       "image": "/dunkinpapajones_frontend/dunkin_dubai_images/image__111.png"
   },
@@ -2244,7 +2244,7 @@ const GobblDeliverySystem = () => {
       "name": "Turkey and Cheese Croissant",
       "description": "Turkey and cheese in a flaky buttery croissant.",
       "category": "Pastry",
-      "price": "AED 18",
+      "price": "18.00 AED",
       "restaurant": "Dunkin Donut",
       "image": "/dunkinpapajones_frontend/dunkin_dubai_images/image__112.png"
   },
@@ -2253,7 +2253,7 @@ const GobblDeliverySystem = () => {
       "name": "Plain Croissant",
       "description": "Made with layers of flaky and buttery pastry dough.",
       "category": "Pastry",
-      "price": "AED 11",
+      "price": "11.00 AED",
       "restaurant": "Dunkin Donut",
       "image": "/dunkinpapajones_frontend/dunkin_dubai_images/image__113.png"
   },
@@ -2262,7 +2262,7 @@ const GobblDeliverySystem = () => {
       "name": "Sandwiches",
       "description": "Chicken Caesar Wrap",
       "category": "Sandwich",
-      "price": "AED 24",
+      "price": "24.00 AED",
       "restaurant": "Dunkin Donut",
       "image": "/dunkinpapajones_frontend/dunkin_dubai_images/image__114.png"
   },
@@ -2271,7 +2271,7 @@ const GobblDeliverySystem = () => {
       "name": "Halloumi & Avocado Muffin",
       "description": "",
       "category": "Muffin",
-      "price": "AED 24",
+      "price": "24.00 AED",
       "restaurant": "Dunkin Donut",
       "image": "/dunkinpapajones_frontend/dunkin_dubai_images/image__115.png"
   },
@@ -2280,7 +2280,7 @@ const GobblDeliverySystem = () => {
       "name": "Cheese Toastie",
       "description": "",
       "category": "Toast",
-      "price": "AED 24",
+      "price": "24.00 AED",
       "restaurant": "Dunkin Donut",
       "image": "/dunkinpapajones_frontend/dunkin_dubai_images/image__116.png"
   },
@@ -2289,7 +2289,7 @@ const GobblDeliverySystem = () => {
       "name": "Grilled Chicken Pesto",
       "description": "",
       "category": "Sandwich",
-      "price": "AED 24",
+      "price": "24.00 AED",
       "restaurant": "Dunkin Donut",
       "image": "/dunkinpapajones_frontend/dunkin_dubai_images/image__117.png"
   },
@@ -2298,7 +2298,7 @@ const GobblDeliverySystem = () => {
       "name": "Roasted Beef",
       "description": "",
       "category": "Sandwich",
-      "price": "AED 24",
+      "price": "24.00 AED",
       "restaurant": "Dunkin Donut",
       "image": "/dunkinpapajones_frontend/dunkin_dubai_images/image__118.png"
   },
@@ -2307,7 +2307,7 @@ const GobblDeliverySystem = () => {
       "name": "Tuna Melt",
       "description": "",
       "category": "Sandwich",
-      "price": "AED 24",
+      "price": "24.00 AED",
       "restaurant": "Dunkin Donut",
       "image": "/dunkinpapajones_frontend/dunkin_dubai_images/image__119.png"
   },
@@ -2316,7 +2316,7 @@ const GobblDeliverySystem = () => {
       "name": "Bakery",
       "description": "Walnut Brownies made with walnuts, dense, fudgy, and with a chewy texture. The walnuts add a nutty flavor and crunch.",
       "category": "Bakery",
-      "price": "AED 10",
+      "price": "10.00 AED",
       "restaurant": "Dunkin Donut",
       "image": "/dunkinpapajones_frontend/dunkin_dubai_images/image__120.png"
   },
@@ -2325,7 +2325,7 @@ const GobblDeliverySystem = () => {
       "name": "Chocolate Muffins with Filling",
       "description": "Mixed with chocolate chips and filled with chocolate sauce.",
       "category": "Muffin",
-      "price": "AED 13",
+      "price": "13.00 AED",
       "restaurant": "Dunkin Donut",
       "image": "/dunkinpapajones_frontend/dunkin_dubai_images/image__121.png"
   },
@@ -2334,7 +2334,7 @@ const GobblDeliverySystem = () => {
       "name": "Blueberry Muffins with Filling",
       "description": "",
       "category": "Muffin",
-      "price": "AED 13",
+      "price": "13.00 AED",
       "restaurant": "Dunkin Donut",
       "image": "/dunkinpapajones_frontend/dunkin_dubai_images/image__122.png"
   },
@@ -2343,7 +2343,7 @@ const GobblDeliverySystem = () => {
       "name": "Brew At Home",
       "description": "Dunkin Espresso Capsules - Signature Blend (10 Capsules). Smooth and flavorful medium-dark roast espresso.",
       "category": "Beverage Capsules",
-      "price": "AED 21.50",
+      "price": "21.50 AED",
       "restaurant": "Dunkin Donut",
       "image": "/dunkinpapajones_frontend/dunkin_dubai_images/image__123.png"
   },
@@ -2352,7 +2352,7 @@ const GobblDeliverySystem = () => {
       "name": "Dunkin Espresso Capsules - Light Roast (10 Capsules)",
       "description": "Bright and balanced taste. Recommended anytime of the day.",
       "category": "Beverage Capsules",
-      "price": "AED 21.50",
+      "price": "21.50 AED",
       "restaurant": "Dunkin Donut",
       "image": "/dunkinpapajones_frontend/dunkin_dubai_images/image__124.png"
   },
@@ -2361,7 +2361,7 @@ const GobblDeliverySystem = () => {
       "name": "Dunkin Espresso Capsules - Bold Roast (10 Capsules)",
       "description": "A deliciously smooth dark-roasted espresso with a robust finish.",
       "category": "Beverage Capsules",
-      "price": "AED 21.50",
+      "price": "21.50 AED",
       "restaurant": "Dunkin Donut",
       "image": "/dunkinpapajones_frontend/dunkin_dubai_images/image__125.png"
   },
@@ -2370,7 +2370,7 @@ const GobblDeliverySystem = () => {
       "name": "Hazelnut (Ground)",
       "description": "100% Arabica Coffee.",
       "category": "Beverages Capsules",
-      "price": "AED 51",
+      "price": "51.00 AED",
       "restaurant": "Dunkin Donut",
       "image": "/dunkinpapajones_frontend/dunkin_dubai_images/image__126.png"
   },
@@ -2379,7 +2379,7 @@ const GobblDeliverySystem = () => {
       "name": "Original Blend (Whole Bean)",
       "description": "100% Arabica Coffee.",
       "category": "Beverages Capsules",
-      "price": "AED 51",
+      "price": "51.00 AED",
       "restaurant": "Dunkin Donut",
       "image": "/dunkinpapajones_frontend/dunkin_dubai_images/image__127.png"
   },
@@ -2388,7 +2388,7 @@ const GobblDeliverySystem = () => {
       "name": "Dark Roast Ground",
       "description": "100% Arabica Coffee.",
       "category": "Beverages Capsules",
-      "price": "AED 61",
+      "price": "61.00 AED",
       "restaurant": "Dunkin Donut",
       "image": "/dunkinpapajones_frontend/dunkin_dubai_images/image__128.png"
   },
@@ -2397,7 +2397,7 @@ const GobblDeliverySystem = () => {
       "name": "Original Blend (Ground)",
       "description": "100% Arabica Coffee.",
       "category": "Beverages Capsules",
-      "price": "AED 51",
+      "price": "51.00 AED",
       "restaurant": "Dunkin Donut",
       "image": "/dunkinpapajones_frontend/dunkin_dubai_images/image__129.png"
   },
@@ -2406,7 +2406,7 @@ const GobblDeliverySystem = () => {
       "name": "Other Beverages",
       "description": "Water",
       "category": "Water",
-      "price": "AED 6",
+      "price": "6.00 AED",
       "restaurant": "Dunkin Donut",
       "image": "/dunkinpapajones_frontend/dunkin_dubai_images/image__130.png"
   },
@@ -2415,7 +2415,7 @@ const GobblDeliverySystem = () => {
       "name": "BLU - Sparkling Water",
       "description": "",
       "category": "Beverages",
-      "price": "AED 8",
+      "price": "8.00 AED",
       "restaurant": "Dunkin Donut",
       "image": "/dunkinpapajones_frontend/dunkin_dubai_images/image__131.png"
   },
@@ -2424,7 +2424,7 @@ const GobblDeliverySystem = () => {
       "name": "Fresh Orange Juice",
       "description": "",
       "category": "Cold Beverages",
-      "price": "AED 13",
+      "price": "13.00 AED",
       "restaurant": "Dunkin Donut",
       "image": "/dunkinpapajones_frontend/dunkin_dubai_images/image__132.png"
   },
@@ -2433,7 +2433,7 @@ const GobblDeliverySystem = () => {
       "name": "Coke",
       "description": "",
       "category": "Cold Beverages",
-      "price": "AED 7",
+      "price": "7.00 AED",
       "restaurant": "Dunkin Donut",
       "image": "/dunkinpapajones_frontend/dunkin_dubai_images/image__133.png"
   },
@@ -2442,7 +2442,7 @@ const GobblDeliverySystem = () => {
       "name": "Sprite",
       "description": "",
       "category": "Cold Beverages",
-      "price": "AED 7",
+      "price": "7.00 AED",
       "restaurant": "Dunkin Donut",
       "image": "/dunkinpapajones_frontend/dunkin_dubai_images/image__134.png"
   },
@@ -2451,7 +2451,7 @@ const GobblDeliverySystem = () => {
       "name": "Fanta",
       "description": "",
       "category": "Cold Beverages",
-      "price": "AED 7",
+      "price": "7.00 AED",
       "restaurant": "Dunkin Donut",
       "image": "/dunkinpapajones_frontend/dunkin_dubai_images/image__135.png"
   },
@@ -2460,7 +2460,7 @@ const GobblDeliverySystem = () => {
       "name": "Diet Coke",
       "description": "",
       "category": "Cold Beverages",
-      "price": "AED 7",
+      "price": "7.00 AED",
       "restaurant": "Dunkin Donut",
       "image": "/dunkinpapajones_frontend/dunkin_dubai_images/image__136.png"
   },
@@ -2469,7 +2469,7 @@ const GobblDeliverySystem = () => {
       "name": "Red Bull",
       "description": "",
       "category": "Cold Beverages",
-      "price": "AED 17",
+      "price": "17.00 AED",
       "restaurant": "Dunkin Donut",
       "image": "/dunkinpapajones_frontend/dunkin_dubai_images/image__137.png"
   },
@@ -2478,7 +2478,7 @@ const GobblDeliverySystem = () => {
       "name": "Red Bull - Sugar Free",
       "description": "",
       "category": "Cold Beverages",
-      "price": "AED 17",
+      "price": "17.00 AED",
       "restaurant": "Dunkin Donut",
       "image": "/dunkinpapajones_frontend/dunkin_dubai_images/image__138.png"
   },
@@ -2487,7 +2487,7 @@ const GobblDeliverySystem = () => {
       "name": "Red Bull - Red Edition",
       "description": "",
       "category": "Cold Beverages",
-      "price": "AED 17",
+      "price": "17.00 AED",
       "restaurant": "Dunkin Donut",
       "image": "/dunkinpapajones_frontend/dunkin_dubai_images/image__139.png"
   },
@@ -2496,7 +2496,7 @@ const GobblDeliverySystem = () => {
       "name": "Stainless Thermos Bottle White 500ML",
       "description": "",
       "category": "Bottle Merchandise",
-      "price": "AED 61",
+      "price": "61.00 AED",
       "restaurant": "Dunkin Donut",
       "image": "/dunkinpapajones_frontend/dunkin_dubai_images/image__140.png"
   },
@@ -2505,7 +2505,7 @@ const GobblDeliverySystem = () => {
       "name": "Stainless Thermos Bottle Pink 500ML",
       "description": "",
       "category": "Bottle Merchandise",
-      "price": "AED 61",
+      "price": "61.00 AED",
       "restaurant": "Dunkin Donut",
       "image": "/dunkinpapajones_frontend/dunkin_dubai_images/image__141.png"
   },
@@ -2514,7 +2514,7 @@ const GobblDeliverySystem = () => {
       "name": "Stainless Thermos Bottle Gold 500ML",
       "description": "",
       "category": "Bottle Merchandise",
-      "price": "AED 61",
+      "price": "61.00 AED",
       "restaurant": "Dunkin Donut",
       "image": "/dunkinpapajones_frontend/dunkin_dubai_images/image__142.png"
   },
@@ -2523,7 +2523,7 @@ const GobblDeliverySystem = () => {
       "name": "Stainless Thermos Bottle Orange 500ML",
       "description": "",
       "category": "Bottle Merchandise",
-      "price": "AED 61",
+      "price": "61.00 AED",
       "restaurant": "Dunkin Donut",
       "image": "/dunkinpapajones_frontend/dunkin_dubai_images/image__143.png"
   },
@@ -2532,7 +2532,7 @@ const GobblDeliverySystem = () => {
       "name": "Double Walled Water Bottle White 500ML",
       "description": "",
       "category": "Bottle Merchandise",
-      "price": "AED 61",
+      "price": "61.00 AED",
       "restaurant": "Dunkin Donut",
       "image": "/dunkinpapajones_frontend/dunkin_dubai_images/image__144.png"
   },
@@ -2541,7 +2541,7 @@ const GobblDeliverySystem = () => {
       "name": "Double Walled Water Bottle Pink 500ML",
       "description": "",
       "category": "Bottle Merchandise",
-      "price": "AED 61",
+      "price": "61.00 AED",
       "restaurant": "Dunkin Donut",
       "image": "/dunkinpapajones_frontend/dunkin_dubai_images/image__145.png"
   },
@@ -2550,7 +2550,7 @@ const GobblDeliverySystem = () => {
       "name": "Double Walled Water Bottle Gold 500ML",
       "description": "",
       "category": "Bottle Merchandise",
-      "price": "AED 61",
+      "price": "61.00 AED",
       "restaurant": "Dunkin Donut",
       "image": "/dunkinpapajones_frontend/dunkin_dubai_images/image__146.png"
   },
@@ -2559,7 +2559,7 @@ const GobblDeliverySystem = () => {
       "name": "Double Walled Water Bottle Orange 500ML",
       "description": "",
       "category": "Bottle Merchandise",
-      "price": "AED 61",
+      "price": "61.00 AED",
       "restaurant": "Dunkin Donut",
       "image": "/dunkinpapajones_frontend/dunkin_dubai_images/image__143.png"
   },
